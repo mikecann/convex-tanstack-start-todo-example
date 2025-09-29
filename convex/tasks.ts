@@ -1,4 +1,4 @@
-import { action, mutation, query } from './_generated/server'
+import { internalMutation, mutation, query } from './_generated/server'
 import { v } from 'convex/values'
 
 export const list = query({
@@ -64,5 +64,25 @@ export const toggle = mutation({
     await ctx.db.patch(args.id, {
       isCompleted: !task.isCompleted,
     })
+  },
+})
+
+const defaultTasks = [
+  "Watch mike's latest video",
+  'Like and subscribe',
+  'Drink tea',
+]
+
+export const resetTasks = internalMutation({
+  args: {},
+  returns: v.null(),
+  handler: async (ctx) => {
+    const tasks = await ctx.db.query('tasks').take(1000)
+    for (const task of tasks) await ctx.db.delete(task._id)
+
+    for (const text of defaultTasks)
+      await ctx.db.insert('tasks', { text, isCompleted: false })
+
+    return null
   },
 })
