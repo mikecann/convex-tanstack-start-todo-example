@@ -1,20 +1,21 @@
 {
-  "name": "tanstack_start_video_demo",
+  "name": "convex-tanstack-start-todo-example",
   "private": true,
   "sideEffects": false,
   "type": "module",
   "scripts": {
     "dev": "npx convex dev --once && concurrently -r npm:dev:web npm:dev:convex",
     "dev:web": "vite dev",
-    "dev:ts": "tsc -b -w",
+    "dev:ts": "tsc -w --noEmit",
     "dev:convex": "npx convex dev",
     "build": "vite build && tsc --noEmit",
-    "start": "node .output/server/index.mjs",
+    "preview": "vite preview",
     "format": "prettier --write .",
-    "deploy": "npm run build && wrangler deploy"
+    "deploy": "wrangler deploy",
+    "cf-typegen": "wrangler types",
+    "postinstall": "npm run cf-typegen"
   },
   "dependencies": {
-    "@cloudflare/vite-plugin": "^1.13.7",
     "@convex-dev/react-query": "^0.0.0-alpha.11",
     "@mantine/core": "^8.3.2",
     "@mantine/hooks": "^8.3.2",
@@ -28,6 +29,7 @@
     "react-dom": "^19.1.1"
   },
   "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.13.7",
     "@types/react": "^19.1.15",
     "@types/react-dom": "^19.1.9",
     "@vitejs/plugin-react": "^5.0.4",
